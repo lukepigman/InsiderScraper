@@ -6,6 +6,7 @@ import math
 import time
 from datetime import date
 import creds
+import utils
 
 user = creds.key
 pwd = creds.password
@@ -19,7 +20,7 @@ def start():
         executeStock(stock)
         print(count)
         count = count + 1
-        time.sleep(60)
+        time.sleep(30)
         
 
 
@@ -35,8 +36,8 @@ def executeStock(stock):
         if(str(order.submitted_at)[:10] == today):
             orderedAlreadyList.append(order.symbol)
         
-    bp= api.get_account().equity
-    allotmentPerStock = float(bp) * .2
+    bp= api.get_account().buying_power
+    allotmentPerStock = float(bp) * utils.percentOfBP
     dontBuyList = ownedStocks + orderedAlreadyList
     dontBuyList = set(dontBuyList)
     if stock not in dontBuyList:
